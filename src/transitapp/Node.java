@@ -38,4 +38,12 @@ public class Node {
 	public ArrayList<Node> getTransfer(){
 		return this.transfer;
 	}
+	
+	/**
+	 * Judges if the inputed node is a transfer node of this node
+	 * @return true if the node is a transfer node of this node
+	 */
+	public boolean isTransfer(Node node) {
+		return this.transfer.contains(node);
+	}
 }
