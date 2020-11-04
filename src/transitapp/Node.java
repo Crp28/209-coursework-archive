@@ -40,10 +40,19 @@ public class Node {
 	}
 	
 	/**
+	 * Judges if this Node is a transfer node for any other Nodes.
+	 * @return true if this node can act as a transfer node, false otherwise
+	 */
+	public boolean isTransferNode() {
+		return this.transfer.size() != 0;
+	}
+	
+	/**
 	 * Judges if the inputed node is a transfer node of this node
+	 * @param node a Node object
 	 * @return true if the node is a transfer node of this node
 	 */
-	public boolean isTransfer(Node node) {
+	public boolean isinTransfer(Node node) {
 		return this.transfer.contains(node);
 	}
 }
