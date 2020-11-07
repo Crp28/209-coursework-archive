@@ -5,16 +5,18 @@ import java.util.ArrayList;
  */
 public abstract class Line {
 	
+	private String name;
 	private ArrayList<Node> nodes;
 	
 	/**
 	 * Takes user input of names of Nodes, separated by comma, orderly construct into a Line.
 	 */
-	public Line(String s) {
+	public Line(String name, String s) {
 		String[] names = s.split(",");
-		for (String name: names) {
-			nodes.add(new Node(name));
+		for (String node: names) {
+			nodes.add(new Node(node));
 		}
+		this.name = name;
 	}
 	
 	/**
@@ -37,6 +39,14 @@ public abstract class Line {
 	 */
 	public ArrayList<Node> getNodes(){
 		return this.nodes;
+	}
+	
+	/**
+	 * Get the name of this Line.
+	 * @return String representing name.
+	 */
+	public String getName() {
+		return this.name;
 	}
 	
 	/**
