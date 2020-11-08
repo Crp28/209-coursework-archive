@@ -8,11 +8,29 @@ package transitapp;
 public class Card {
 	
 	public static final boolean NORMAL = true, SUSPENDED = false;
-	@update
+	private static int count = 0;
+	public int id;
 	public CardHolder owner;
 	private boolean status = NORMAL;
 	private double balance = 19.0;    // All new cards start with a $19 balance
-	private int id;
+	
+	
+	/** Each new card will have an id that equals id of the last produced card +1.
+	 * 
+	 */
+	Card(CardHolder owner) {
+		id=++count;
+		this.owner = owner;
+	}
+	
+	/**
+	 * Counts how many cards have been produced so far.
+	 * 
+	 * @return the number of cards produced
+	 */
+	public static int getCount(){
+		return count;
+	}
 	
 	/**
 	 * Returns the balance in this card.
@@ -30,6 +48,15 @@ public class Card {
 	 */
 	public CardHolder getHolder() {
 		return this.owner;
+	}
+	
+	/**
+	 * Returns id of the card.
+	 * 
+	 * @return id of the card
+	 */
+	public double getId() {
+		return this.id;
 	}
 	
 	/**
@@ -63,6 +90,8 @@ public class Card {
 		
 		return this.status;
 	}
+	
+	
 }
 
 
