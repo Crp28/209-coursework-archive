@@ -13,6 +13,7 @@ public class Node {
 	 */
 	public Node(String name) {
 		this.name = name;
+		this.transfer = new ArrayList<Node>();
 	}
 	
 	/**
@@ -54,5 +55,23 @@ public class Node {
 	 */
 	public boolean isinTransfer(Node node) {
 		return this.transfer.contains(node);
+	}
+	
+	public String toString() {
+		String s = "Node: " + this.getName();
+		if (this.transfer.isEmpty()) {
+			s += " is not a transfer node";
+		}
+		else {
+			s += " is a transfer node of ";
+			for (Node n : this.transfer) {
+				if (n != this.transfer.get(this.transfer.size()-1))
+					s += n.getName() + ", ";
+				else {
+					s += n.getName();
+				}
+			}
+		}
+		return s;
 	}
 }

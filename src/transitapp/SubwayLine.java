@@ -9,8 +9,8 @@ public class SubwayLine extends Line{
 	/**
 	 * Takes user input of names of subway stations, separated by comma, orderly construct into a SubwayLine.
 	 */
-	public SubwayLine(String s) {
-		super(s);
+	public SubwayLine(String name, String s) {
+		super(name, s);
 	}
 	
 	/**
@@ -21,5 +21,18 @@ public class SubwayLine extends Line{
 	@Override
 	public double getCost(int traveled) {
 		return traveled * SUBWAY_COST_PER_STATION;
+	}
+	
+	@Override
+	public String toString() {
+		String s = "Subway Line " + this.getName() + ": \n";
+		for (Node n : this.getNodes()) {
+			if (n != this.getNodes().get(this.getNodes().size()-1))
+				s += n.getName() + ", ";
+			else {
+				s += n.getName();
+			}
+		}
+		return s;
 	}
 }

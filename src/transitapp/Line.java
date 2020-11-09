@@ -12,9 +12,11 @@ public abstract class Line {
 	 * Takes user input of names of Nodes, separated by comma, orderly construct into a Line.
 	 */
 	public Line(String name, String s) {
+		this.nodes = new ArrayList<Node>();
 		String[] names = s.split(",");
 		for (String node: names) {
-			nodes.add(new Node(node));
+			Node n = new Node(node);
+			this.nodes.add(n);
 		}
 		this.name = name;
 	}
@@ -59,19 +61,30 @@ public abstract class Line {
 	public void hasTransferto(Line line, String transferto, String transfer) {
 		int indexline = 0;
 		int indexthis = 0;
-		for (int i = 0; i < line.getNodes().size(); i++) {
-			if (line.getNodes().get(i).getName() == transferto) {
-				indexline = i;
+		while (indexline < line.getNodes().size()) {
+			if (line.getNodes().get(indexline).getName().equals(transferto))
 				break;
-			}
+			indexline++;
 		}
-		for (int i = 0; i < this.getNodes().size(); i++) {
-			if (this.getNodes().get(i).getName() == transfer) {
-				indexthis = i;
+		while (indexthis < this.getNodes().size()) {
+			System.out.println(this.getNodes().get(indexthis).getName());
+			if (this.getNodes().get(indexthis).getName().equals(transfer))
 				break;
-			}
+			indexthis++;
 		}
 		line.getNodes().get(indexline).addTransfer(this.getNodes().get(indexthis));
 		this.getNodes().get(indexthis).addTransfer(line.getNodes().get(indexline));
+	}
+	
+	public String toString() {
+		String s = "Line " + this.name + ": \n";
+		for (Node n : this.nodes) {
+			if (n != this.getNodes().get(this.getNodes().size()-1))
+				s += n.getName() + ", ";
+			else {
+				s += n.getName();
+			}
+		}
+		return s;
 	}
 }
