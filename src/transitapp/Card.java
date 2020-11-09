@@ -1,8 +1,10 @@
 package transitapp;
 
+import java.util.ArrayList;
+
 /**
  * A travel card owned by a CardHolder. It knows the current balance in the card
- * and keeps track of the status of the card. It also records the travel history
+ * and keeps track of the status of the card. It also records the trip history
  * of the user when using this card.
  */
 public class Card {
@@ -10,6 +12,7 @@ public class Card {
 	public static final boolean NORMAL = true, SUSPENDED = false;
 	private static int count = 0;
 	public int id;
+	public ArrayList<Trip> trip_history;
 	public CardHolder owner;
 	private boolean status = NORMAL;
 	private double balance = 19.0;    // All new cards start with a $19 balance
@@ -51,6 +54,16 @@ public class Card {
 	}
 	
 	/**
+	 * Returns the trip history of the card.
+	 * 
+	 * @return ArrayList<Trip> that records trip history for the card
+	 */
+	public ArrayList<Trip> getTrip() {
+		return this.trip_history;
+	}
+	
+	
+	/**
 	 * Returns id of the card.
 	 * 
 	 * @return id of the card
@@ -70,7 +83,7 @@ public class Card {
 		this.balance += amount;
 		this.updateStatus();
 		
-		return this.getBalance();		
+		return this.getBalance();	
 	}
 	
 	/**
@@ -91,8 +104,29 @@ public class Card {
 		return this.status;
 	}
 	
+	/**
+	 * Record a Trip.
+	 */
+	public void addTrip(Trip trip) {
+		this.trip_history.add(trip);
+	}
 	
+	
+	/**
+	 * Return string representation of this card
+	 *
+	 * @return s   The string representation of this card
+	 */
+	public String toString() {
+		String s = "The card " + this.id +
+				 " owned by " + this.owner +
+				 " has balance of " + this.balance +
+				 " dollars.";
+				 
+		return s;
+	}
 }
+
 
 
 
