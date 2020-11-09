@@ -53,7 +53,7 @@ public class Main extends Application{
 		TextField field_bus = new TextField();
 		TextField field_subway = new TextField();
 		
-		Button bt_form = new Button("Form");
+		Button bt_next = new Button("Next");
 		Button bt_bus = new Button("Comfirm");
 		Button bt_subway = new Button("Comfirm");		
 		
@@ -72,9 +72,9 @@ public class Main extends Application{
 		BorderPane stationpage_pane = new BorderPane();
 		stationpage_pane.setTop(label_station_input);
 		stationpage_pane.setCenter(station_input_pane);
-		stationpage_pane.setBottom(bt_form);
+		stationpage_pane.setBottom(bt_next);
 		BorderPane.setAlignment(label_station_input, Pos.CENTER);
-		BorderPane.setAlignment(bt_form, Pos.CENTER);
+		BorderPane.setAlignment(bt_next, Pos.CENTER);
 		
 		
 		Scene station_scene = new Scene(stationpage_pane, 500, 500);
