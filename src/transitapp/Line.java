@@ -67,7 +67,6 @@ public abstract class Line {
 			indexline++;
 		}
 		while (indexthis < this.getNodes().size()) {
-			System.out.println(this.getNodes().get(indexthis).getName());
 			if (this.getNodes().get(indexthis).getName().equals(transfer))
 				break;
 			indexthis++;
