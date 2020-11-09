@@ -4,6 +4,8 @@
 
 package transitapp;
 
+import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -19,8 +22,11 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 	
+	private static int num_subway_line = 0;
+	private static int num_bus_line = 0;
+	
 	private void initUI(Stage stage) {
-		
+	
 	/*below is the cover scene part, including a boardpane with a botton on it*/	
 		//label part of the cover
 		Label label_cover_title = new Label("Welcome to Rontoto");
@@ -55,7 +61,7 @@ public class Main extends Application{
 		
 		Button bt_next = new Button("Next");
 		Button bt_bus = new Button("Comfirm");
-		Button bt_subway = new Button("Comfirm");		
+		Button bt_subway = new Button("Comfirm");	
 		
 		GridPane station_input_pane = new GridPane();
 		station_input_pane.setVgap(70);
@@ -82,6 +88,23 @@ public class Main extends Application{
 		
 	/*Action will happen after pressing button in cover pages*/
 		bt_construct.setOnAction(new SwitchScene(stage, station_scene));
+		
+	
+	/*pressing "Comfirm" button for constructing bus line and subway station*/
+		ArrayList<BusLine> busline = new ArrayList<>();
+		bt_bus.addEventHandler(MouseEvent.MOUSE_CLICKED, new ConstructBusLine(busline, field_bus, num_bus_line));
+		
+		SubwayLine subwayline = null;
+		bt_subway.addEventHandler(MouseEvent.MOUSE_CLICKED, new ConstructSubwayStation(subwayline, field_subway, num_subway_line));
+		
+		
+		
+
+		
+			
+	
+		
+		
 	
 		
 		
