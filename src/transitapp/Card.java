@@ -10,20 +10,20 @@ import java.util.ArrayList;
 public class Card {
 	
 	public static final boolean NORMAL = true, SUSPENDED = false;
-	private static int count = 0;
+	private static int count = 0;      
 	private int id;
 	private ArrayList<Trip> trip_history;
-	private boolean status = NORMAL;
+	private boolean status = NORMAL;   
 	private double balance = 19.0;    // All new cards start with a $19 balance
-	public CardHolder owner;
+	private CardHolder owner;
 	
 	
 	
-	/** Each new card will have an id that equals id of the last produced card +1.
-	 * 
+	/** 
+	 * Each new card will have an id that equals id of the last produced card +1.
 	 */
 	Card(CardHolder owner) {
-		id=++count;
+		this.id=++count;
 		this.owner = owner;
 	}
 	
