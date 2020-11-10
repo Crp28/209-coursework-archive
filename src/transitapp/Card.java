@@ -11,11 +11,12 @@ public class Card {
 	
 	public static final boolean NORMAL = true, SUSPENDED = false;
 	private static int count = 0;
-	public int id;
-	public ArrayList<Trip> trip_history;
-	public CardHolder owner;
+	private int id;
+	private ArrayList<Trip> trip_history;
 	private boolean status = NORMAL;
 	private double balance = 19.0;    // All new cards start with a $19 balance
+	public CardHolder owner;
+	
 	
 	
 	/** Each new card will have an id that equals id of the last produced card +1.
@@ -68,7 +69,7 @@ public class Card {
 	 * 
 	 * @return id of the card
 	 */
-	public double getId() {
+	public int getId() {
 		return this.id;
 	}
 	
@@ -109,6 +110,14 @@ public class Card {
 	 */
 	public void addTrip(Trip trip) {
 		this.trip_history.add(trip);
+	}
+	
+	
+	/**
+	 * Clear all Trip from the trip history of the card.
+	 */
+	public void clearTrip() {
+		this.trip_history.clear();
 	}
 	
 	
