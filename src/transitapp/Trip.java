@@ -77,6 +77,9 @@ public class Trip {
 		for (Object[] segment : route) {
 			tc += ((Line) segment[0]).getCost(((Line) segment[0]).getNumTraveled(((ArrayList<Node>)segment[1]).get(0), ((ArrayList<Node>)segment[1]).get(1)));
 		}
+		if (tc > 6.0) {
+			tc = 6.0;
+		}
 		return tc;
 	}
 	
