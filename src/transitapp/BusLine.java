@@ -11,6 +11,7 @@ public class BusLine extends Line{
 	 */
 	public BusLine(String name, String s) {
 		super(name, s);
+		this.type = "Bus";
 	}
 	
 	/**
