@@ -7,6 +7,7 @@ public abstract class Line {
 	
 	private String name;
 	private ArrayList<Node> nodes;
+	protected String type;
 	
 	/**
 	 * Takes user input of names of Nodes, separated by comma, orderly construct into a Line.
