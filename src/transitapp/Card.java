@@ -88,6 +88,21 @@ public class Card {
 	}
 	
 	/**
+	 * Remove money from the card, then update its status according to the condition.
+	 * Returns the balance after payment
+	 * 
+	 * @param amount double represents the amount removing from the card
+	 * @return the balance in the card after removing balance
+	 */
+	public double pay(double amount) {
+		this.balance = this.balance - amount;
+		this.updateStatus();
+		
+		return this.getBalance();	
+	}
+	
+	
+	/**
 	 * Update the status for the card. If the balance moves from positive to
 	 * negative, suspend the card; if the balance moves from negative to positive,
 	 * enable the card to be used. Do nothing if it does not meet any above cases.
