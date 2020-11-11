@@ -11,6 +11,7 @@ public class SubwayLine extends Line{
 	 */
 	public SubwayLine(String name, String s) {
 		super(name, s);
+		this.type = "Subway";
 	}
 	
 	/**
