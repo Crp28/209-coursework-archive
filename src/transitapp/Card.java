@@ -102,6 +102,22 @@ public class Card {
 	}
 	
 	
+	/** 
+	 * Manually suspend a card.
+	 */
+	public void suspend() {
+		this.status = SUSPENDED;
+	}
+	
+	
+	/** 
+	 * Manually activate a card.
+	 */
+	public void activate() {
+		this.status = NORMAL;
+	}
+	
+	
 	/**
 	 * Update the status for the card. If the balance moves from positive to
 	 * negative, suspend the card; if the balance moves from negative to positive,
