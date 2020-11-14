@@ -1,17 +1,17 @@
-package transitapp;
-
 import java.util.ArrayList;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- * this class handle the event of constructing a bus line after user pressing the comfirm button beside bus stop input textfield.
+ * this class handles the event of constructing a bus line after user pressing the comfirm button beside bus stop input textfield.
  * take a empty list "busline" and two TextField "text_busline" and "text_bus" as input, then form a busline using BusLine class
  *"num_bus_line" just for testing propose now
  * empty list "busline" store the information of busline in main for future usage.
@@ -39,15 +39,13 @@ class ConstructBusLine implements EventHandler<MouseEvent>{
 	public void handle(MouseEvent event) {
 		
 		
-		BusLine b1 = new BusLine("Bus Line " + this.text_busline.getText(), this.text_bus.getText());
+		BusLine b1 = new BusLine(this.text_busline.getText(), this.text_bus.getText());
 		busline.add(b1);
 		this.text_bus.clear();
 		this.text_busline.clear();
 		
 		System.out.println(busline.get(this.num_bus_line));
 		this.num_bus_line += 1;
-		System.out.println(this.text_bus.getText());
-		System.out.println(b1.getNodes());
 		
 	}
 	
@@ -56,7 +54,7 @@ class ConstructBusLine implements EventHandler<MouseEvent>{
 }
 
 /**
- * this class handle the event of constructing a subway line after user pressing the comfirm button beside subway stations input textfield.
+ * this class handles the event of constructing a subway line after user pressing the comfirm button beside subway stations input textfield.
  * take a empty list "subwayline" and two TextField "text_subwayline" and "text_subway" as input, then form a subwayline using SubwayLine class
  * empty list "busline" store the information of busline in main for future usage.
  */
@@ -66,29 +64,54 @@ class ConstructSubwayStation implements EventHandler<MouseEvent>{
 	private ArrayList<SubwayLine> subwayline;
 	private TextField text_subwayline;
 	private Button bt_subway;
+	private Label warninglabel;
 	
-	public ConstructSubwayStation(ArrayList<SubwayLine> subwayline, TextField text_subwayline, TextField text_subway, Button bt_subway) {
+	public ConstructSubwayStation(ArrayList<SubwayLine> subwayline, TextField text_subwayline, TextField text_subway, Button bt_subway, Label lb) {
 		
 		this.text_subway = text_subway;
 		this.subwayline = subwayline;
 		this.text_subwayline = text_subwayline;
 		this.bt_subway = bt_subway;
+		this.warninglabel = lb;
 		
 	}
 
 	@Override
 	public void handle(MouseEvent event) {
 		
-		this.subwayline.add(new SubwayLine("Subway Line " + this.text_subwayline.getText(), this.text_subway.getText())); 
+		this.subwayline.add(new SubwayLine(this.text_subwayline.getText(), this.text_subway.getText())); 
 		this.text_subway.clear();
 		this.text_subwayline.clear();
 		this.bt_subway.setDisable(true);
+		this.warninglabel.setText("");
 		
 		
 		
-		System.out.println(this.text_subway.getText());
-		System.out.println(this.subwayline);
+		System.out.println(this.subwayline.get(0));
 		
+	}
+	
+}
+
+
+class SetIntersectBS implements EventHandler<MouseEvent>{
+	
+	private ArrayList<SubwayLine> subwayline;
+	private ArrayList<BusLine> busline;
+	
+	public SetIntersectBS(ArrayList<SubwayLine> subwayline, ArrayList<BusLine> busline) {
+		this.subwayline = subwayline;
+		this.busline = busline;
+	}
+
+	@Override
+	public void handle(MouseEvent event) {
+		try {
+			this.busline.get(Main.chosen_busline_index).hasTransferto(this.subwayline.get(0), Main.chosen_station, Main.chosen_stop);
+			System.out.println(this.busline.get(Main.chosen_busline_index).getNodes());
+			System.out.println(this.subwayline.get(0).getNodes());
+		}
+		catch(Exception e) { }
 	}
 	
 }
