@@ -10,19 +10,20 @@ import java.util.ArrayList;
 public class Card {
 	
 	public static final boolean NORMAL = true, SUSPENDED = false;
-	private static int count = 0;
-	public int id;
-	public ArrayList<Trip> trip_history;
-	public CardHolder owner;
-	private boolean status = NORMAL;
+	private static int count = 0;      
+	private int id;
+	private ArrayList<Trip> trip_history;
+	private boolean status = NORMAL;   
 	private double balance = 19.0;    // All new cards start with a $19 balance
+	private CardHolder owner;
 	
 	
-	/** Each new card will have an id that equals id of the last produced card +1.
-	 * 
+	
+	/** 
+	 * Each new card will have an id that equals id of the last produced card +1.
 	 */
 	Card(CardHolder owner) {
-		id=++count;
+		this.id=++count;
 		this.owner = owner;
 	}
 	
@@ -68,7 +69,7 @@ public class Card {
 	 * 
 	 * @return id of the card
 	 */
-	public double getId() {
+	public int getId() {
 		return this.id;
 	}
 	
@@ -87,6 +88,37 @@ public class Card {
 	}
 	
 	/**
+	 * Remove money from the card, then update its status according to the condition.
+	 * Returns the balance after payment
+	 * 
+	 * @param amount double represents the amount removing from the card
+	 * @return the balance in the card after removing balance
+	 */
+	public double pay(double amount) {
+		this.balance = this.balance - amount;
+		this.updateStatus();
+		
+		return this.getBalance();	
+	}
+	
+	
+	/** 
+	 * Manually suspend a card.
+	 */
+	public void suspend() {
+		this.status = SUSPENDED;
+	}
+	
+	
+	/** 
+	 * Manually activate a card.
+	 */
+	public void activate() {
+		this.status = NORMAL;
+	}
+	
+	
+	/**
 	 * Update the status for the card. If the balance moves from positive to
 	 * negative, suspend the card; if the balance moves from negative to positive,
 	 * enable the card to be used. Do nothing if it does not meet any above cases.
@@ -96,9 +128,9 @@ public class Card {
 	 */
 	public boolean updateStatus() {
 		if (this.balance < 0.0 && this.status == NORMAL) {
-			this.status = SUSPENDED;
+			this.status = SUSPENDED;      // suspend the card if insufficient funds
 		} else if (this.balance >= 0.0 && this.status == SUSPENDED) {
-			this.status = NORMAL;
+			this.status = NORMAL;         // active the card if there is balance
 		}
 		
 		return this.status;
@@ -109,6 +141,14 @@ public class Card {
 	 */
 	public void addTrip(Trip trip) {
 		this.trip_history.add(trip);
+	}
+	
+	
+	/**
+	 * Clear all Trip from the trip history of the card.
+	 */
+	public void clearTrip() {
+		this.trip_history.clear();
 	}
 	
 	
