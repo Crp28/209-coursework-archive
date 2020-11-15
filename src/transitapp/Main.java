@@ -45,7 +45,7 @@ public class Main extends Application{
 	
 	private void initUI(Stage stage) {
 	
-	/*below is the cover scene part, including a boardpane with a button on it*/	
+	/*below is the cover scene part, including a BoardPane with a button on it*/	
 		//label part of the cover
 		Label page1 = new Label("P1");
 		Label label_cover_title = new Label("Rontoto Transit System");
