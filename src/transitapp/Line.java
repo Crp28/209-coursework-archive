@@ -64,12 +64,12 @@ public abstract class Line {
 	public void hasTransferto(Line line, String transferto, String transfer) {
 		int indexline = 0;
 		int indexthis = 0;
-		while (indexline < line.getNodes().size()) {
+		while (indexline < line.getNodes().size()-1) {
 			if (line.getNodes().get(indexline).getName().equals(transferto))
 				break;
 			indexline++;
 		}
-		while (indexthis < this.getNodes().size()) {
+		while (indexthis < this.getNodes().size()-1) {
 			if (this.getNodes().get(indexthis).getName().equals(transfer))
 				break;
 			indexthis++;

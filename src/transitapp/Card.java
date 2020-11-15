@@ -12,7 +12,7 @@ public class Card {
 	public static final boolean NORMAL = true, SUSPENDED = false;
 	private static int count = 0;      
 	private int id;
-	private ArrayList<Trip> trip_history;
+	private ArrayList<Trip> trip_history = new ArrayList<Trip>();
 	private boolean status = NORMAL;   
 	private double balance = 19.0;    // All new cards start with a $19 balance
 	private CardHolder owner;

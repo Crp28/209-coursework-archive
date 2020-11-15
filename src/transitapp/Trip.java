@@ -10,7 +10,7 @@ public class Trip {
 	private Node arrive;
 	private int timeSeconds;
 	private boolean finished = false;
-	private ArrayList<Object[]> route;
+	private ArrayList<Object[]> route = new ArrayList<Object[]>();
 	
 	public Trip(Card card, Node node, Line line, String date) {
 		this.card = card;
