@@ -1,3 +1,5 @@
+package transitapp;
+
 import java.util.ArrayList;
 
 public class Trip {

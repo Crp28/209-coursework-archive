@@ -1,3 +1,5 @@
+package transitapp;
+
 import java.util.ArrayList;
 /**
  * A node in a transit line. It can be a bus stop or subway station. It may act as a transfer node.

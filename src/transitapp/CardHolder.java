@@ -126,7 +126,7 @@ public class CardHolder {
 	 */
 	public ArrayList<Trip> recent_trips() {
 		
-		ArrayList<Trip> sub;
+		ArrayList<Trip> sub = new ArrayList<Trip>();
 		int lst = this.trips.size() - 1;
 		for (int i = lst ; i >= lst - 2 ; i = i - 1) {
 			sub.add(this.trips.get(i));
@@ -141,5 +141,5 @@ public class CardHolder {
 				 "." ;
 				 
 		return s;
-	
+	}
 }

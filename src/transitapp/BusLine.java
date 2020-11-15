@@ -1,3 +1,4 @@
+package transitapp;
 
 /**
  * A bus line that contains bus stops and transfer stations.
