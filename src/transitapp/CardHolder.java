@@ -24,14 +24,14 @@ public class CardHolder {
 	}
 	
 	/** 
-	 * Change email address for the CardHolder. Return the new email address.
+	 * Change name for the CardHolder. Return the new name.
 	 * 
-	 * @param new_email   the new email of the CardHolder
-	 * @Return email address of the CardHolder after updating it
+	 * @param new_name   the new name of the CardHolder
+	 * @Return name of the CardHolder after updating it
 	 */
-	public String updateEmail(String new_email) {
-		this.email = new_email;
-		return this.email;
+	public String updateName(String new_name) {
+		this.name = new_name;
+		return this.name;
 	}
 	
 	
