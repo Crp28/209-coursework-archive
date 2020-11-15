@@ -23,6 +23,23 @@ public class CardHolder {
 		this.email = email;
 	}
 	
+	//getter
+	public String getName() {
+		return this.name;
+	}
+	
+	public String getEmail() {
+		return this.email;
+	}
+	
+	public ArrayList<Card> getCards() {
+		return this.cards;
+	}
+	
+	public ArrayList<Trip> getTrips() {
+		return this.trips;
+	}
+	
 	/** 
 	 * Change name for the CardHolder. Return the new name.
 	 * 
