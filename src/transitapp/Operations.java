@@ -1,15 +1,19 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 
 
 class SignUpCardHolder implements EventHandler<MouseEvent>{
@@ -64,7 +68,7 @@ class ShowDashboard implements EventHandler<ActionEvent>{
 		Label balance_reminder = new Label("No card is low on balance.");
 		ArrayList<Integer> low_balance_cards = new ArrayList<>();
 		balance_reminder.setTextFill(Color.GREEN);
-		String cards = "Currently holding cards: ";
+		String cards = "Currently holding card ids: ";
 		String temp = "";
 		for (Card c: Main.activeholder.getCards()) {
 			if (c.equals(Main.activeholder.getCards().get(Main.activeholder.getCards().size()-1))) {
@@ -95,8 +99,10 @@ class ShowDashboard implements EventHandler<ActionEvent>{
 			balance_reminder.setText(s);
 			balance_reminder.setTextFill(Color.CRIMSON);
 		}
-		
-		output.getChildren().add(new Label(cards));
+		Label cards_str = new Label(cards);
+		cards_str.setWrapText(true);
+		cards_str.setTextAlignment(TextAlignment.CENTER);
+		output.getChildren().add(cards_str);
 		output.getChildren().add(new Label("Accumulated " + Main.activeholder.getTrips().size() + " trips in this period."));
 		output.getChildren().add(balance_reminder);
 	}
@@ -166,6 +172,79 @@ class ShowTrips implements EventHandler<ActionEvent>{
 		output.getChildren().clear();
 		output.getChildren().add(new Label("789"));
 		
+	}
+	
+}
+
+class ManageCards implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	
+	public ManageCards(VBox output) {
+		this.output = output;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Label remove_description = new Label("or select a following card to remove: ");
+		Label confirmation_message = new Label();
+		confirmation_message.setTextFill(Color.GREEN);
+		Button add_card = new Button("Get a New Card");
+		Button remove_card = new Button("Confirm");
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (Card c: Main.activeholder.getCards()) {
+			ids.add(c.getId());
+		}
+		ObservableList<Integer> list_cards = FXCollections.observableArrayList(ids);
+		ChoiceBox<Integer> choices = new ChoiceBox<>(list_cards);
+		choices.setPrefWidth(50);
+		
+		add_card.setOnAction(new AddCard(confirmation_message, list_cards));
+		remove_card.setOnAction(new RemoveCard(confirmation_message, choices, list_cards));
+		
+		output.getChildren().clear();
+		this.output.getChildren().addAll(add_card, remove_description, choices, remove_card, confirmation_message);
+	}
+	
+}
+
+class AddCard implements EventHandler<ActionEvent>{
+	
+	private Label confirmation_message;
+	private ObservableList<Integer> list_cards;
+	
+	public AddCard(Label confirmation_message, ObservableList<Integer> list_cards) {
+		this.confirmation_message = confirmation_message;
+		this.list_cards = list_cards;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Card new_c = new Card(Main.activeholder);
+		Main.activeholder.addCard(new_c);
+		this.list_cards.add(new_c.getId());
+		confirmation_message.setText("Successfully added card: " + new_c.getId());
+	}
+	
+}
+
+class RemoveCard implements EventHandler<ActionEvent>{
+	
+	private Label confirmation_message;
+	private ChoiceBox<Integer> choices;
+	private ObservableList<Integer> list_cards;
+	
+	public RemoveCard(Label confirmation_message, ChoiceBox<Integer> choices, ObservableList<Integer> list_cards) {
+		this.choices = choices;
+		this.confirmation_message = confirmation_message;
+		this.list_cards = list_cards;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Main.activeholder.removeCard(choices.getSelectionModel().getSelectedIndex());
+		this.list_cards.remove(choices.getSelectionModel().getSelectedIndex());
+		this.confirmation_message.setText("Card removed.");
 	}
 	
 }

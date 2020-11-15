@@ -350,14 +350,14 @@ public class Main extends Application{
 		Button logout = new Button("Logout\n<---");
 		logout.setTextAlignment(TextAlignment.CENTER);
 		logout.setPrefSize(120, 70);
-		Button add_card = new Button("Add Card");
-		add_card.setPrefSize(120, 70);
+		Button manage_card = new Button("Manage Cards");
+		manage_card.setPrefSize(120, 70);
 		Button add_balance = new Button("Add Banlance");
 		add_balance.setPrefSize(120, 70);
 		Button suspend_card = new Button("Suspend Card");
 		suspend_card.setPrefSize(120, 70);
 		
-		HBox control_tabs = new HBox(10, imageMysteriousman, add_card, add_balance, suspend_card);
+		HBox control_tabs = new HBox(10, imageMysteriousman, manage_card, add_balance, suspend_card);
 		control_tabs.setStyle("-fx-background-color: #2ec3e7;-fx-border-color: black;");
 		control_tabs.setAlignment(Pos.CENTER);
 		
@@ -392,6 +392,7 @@ public class Main extends Application{
 		dashboard.setOnAction(new ShowDashboard(output_area));
 		userinfo.setOnAction(new ShowUserInfo(output_area));
 		recenttrips.setOnAction(new ShowTrips(output_area));
+		manage_card.setOnAction(new ManageCards(output_area));
 		
 
 		
