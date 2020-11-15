@@ -5,7 +5,7 @@ package transitapp;
  */
 public class BusLine extends Line{
 	
-	private static final double BUS_COST = 2.00;
+	public static final double BUS_COST = 2.00;
 	
 	/**
 	 * Takes user input of names of bus stops, separated by comma, orderly construct into a BusLine.
