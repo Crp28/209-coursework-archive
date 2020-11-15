@@ -26,9 +26,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Main extends Application{
@@ -345,7 +347,8 @@ public class Main extends Application{
 		ImageView imageMysteriousman =new ImageView(mysteriousman);
 		imageMysteriousman.setFitHeight(80);
 		imageMysteriousman.setFitWidth(90);
-		Button logout = new Button("Logout");
+		Button logout = new Button("Logout\n<---");
+		logout.setTextAlignment(TextAlignment.CENTER);
 		logout.setPrefSize(120, 70);
 		Button add_card = new Button("Add Card");
 		add_card.setPrefSize(120, 70);
@@ -355,21 +358,49 @@ public class Main extends Application{
 		suspend_card.setPrefSize(120, 70);
 		
 		HBox control_tabs = new HBox(10, imageMysteriousman, add_card, add_balance, suspend_card);
-		control_tabs.setStyle("-fx-background-color: #2ec3e7;");
+		control_tabs.setStyle("-fx-background-color: #2ec3e7;-fx-border-color: black;");
 		control_tabs.setAlignment(Pos.CENTER);
+		
 		
 		Hyperlink dashboard = new Hyperlink("Dashboard");
 		dashboard.setBorder(Border.EMPTY);
-		dashboard.setStyle("-fx-text-fill: #00a2ff;");
+		dashboard.setStyle("-fx-text-fill: #00a2ff;-fx-underline: false;");
+		Hyperlink userinfo = new Hyperlink("User Info");
+		userinfo.setBorder(Border.EMPTY);
+		userinfo.setStyle("-fx-text-fill: #00a2ff;-fx-underline: false;");
+		Hyperlink recenttrips = new Hyperlink("Check recent trips");
+		recenttrips.setWrapText(true);
+		recenttrips.setBorder(Border.EMPTY);
+		recenttrips.setStyle("-fx-text-fill: #00a2ff;-fx-underline: false;");
+		recenttrips.setTextAlignment(TextAlignment.CENTER);
+		Hyperlink record_trip = new Hyperlink("Record a trip...");
+		record_trip.setWrapText(true);
+		record_trip.setBorder(Border.EMPTY);
+		record_trip.setStyle("-fx-text-fill: red;-fx-underline: true;");
+		record_trip.setTextAlignment(TextAlignment.CENTER);
 		
-		VBox control_links = new VBox(20, dashboard);
+		VBox control_links = new VBox(35, dashboard, userinfo, recenttrips, record_trip, logout);
+		VBox.setMargin(dashboard, new Insets(55,0,0,0));
+		control_links.setPrefWidth(100);
+		control_links.setAlignment(Pos.CENTER);
+		control_links.setStyle("-fx-border-color: black");
+		
+		VBox output_area = new VBox(20);
+		output_area.setAlignment(Pos.CENTER);
+		
+		
+		dashboard.setOnAction(new ShowDashboard(output_area));
+		userinfo.setOnAction(new ShowUserInfo(output_area));
+		recenttrips.setOnAction(new ShowTrips(output_area));
+		
+
 		
 		BorderPane control_panel = new BorderPane();
 		control_panel.setTop(control_tabs);
-		control_panel.setCenter(logout);
 		control_panel.setLeft(control_links);
+		control_panel.setCenter(output_area);
 		
-		logout.setOnAction(new SwitchScene(stage, setSelection_scene));
+		logout.setOnAction(new Logout(stage, setSelection_scene, output_area));
 		
 		Scene set_User_control_panel_scene = new Scene(control_panel, 500, 500);
 		
