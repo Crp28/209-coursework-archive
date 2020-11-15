@@ -126,8 +126,11 @@ public class CardHolder {
 	 */
 	public ArrayList<Trip> recent_trips() {
 		
-		ArrayList<Trips> sub;
-		sub = this.trips.sublist(Math.max(this.trips.size() - 3, 0), this.trips.size());
+		ArrayList<Trip> sub;
+		int lst = this.trips.size() - 1;
+		for (int i = lst ; i >= lst - 2 ; i = i - 1) {
+			sub.add(this.trips.get(i));
+		}
 		return sub;
 	}
 	
