@@ -95,7 +95,10 @@ class ConstructSubwayStation implements EventHandler<MouseEvent>{
 	
 }
 
-
+/**
+ * This class is used when "Set Intersect!" is clicked to set the two selected Nodes as intersect(transfer node)
+ * to one another.
+ */
 class SetIntersectBS implements EventHandler<MouseEvent>{
 	
 	private ArrayList<SubwayLine> subwayline;

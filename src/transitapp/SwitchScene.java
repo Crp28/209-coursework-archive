@@ -1,6 +1,7 @@
 package transitapp;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -105,4 +106,39 @@ class SwitchAndDo1 implements EventHandler<ActionEvent>{
 	    
 		
   }
+}
+
+/**
+ * This event handler takes a inputed email and set the 
+ * active CardHolder to the one this email is referring to,
+ * while switching the scene to the user control panel.
+ */
+class SwitchAndDo2 implements EventHandler<ActionEvent>{
+	private HashMap<String, CardHolder> holders;
+	private TextField email;
+	private Label warning;
+	private Stage stage;
+	private Scene scene;
+	
+	public SwitchAndDo2(Stage stage, Scene scene, HashMap<String, CardHolder> holders, TextField email, Label warning) {
+		this.holders = holders;
+		this.email = email;
+		this.warning = warning;
+		this.stage = stage;
+		this.scene = scene;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		if (holders.containsKey(email.getText())) {
+			Main.activeholder = this.holders.get(email.getText());
+			warning.setText(null);
+			this.stage.setScene(scene);
+		}
+		else {
+			warning.setText("Email does not exist.");
+		}
+		
+	}
+	
 }
