@@ -1,3 +1,5 @@
+package transitapp;
+
 import java.util.ArrayList;
 
 public class Trip {
@@ -134,7 +136,7 @@ public class Trip {
 				return "INSUFFICIENT BALANCE";
 			}
 			if (lastline.equals(line)) {
-				if (lastsegment[1].equals(null)) {
+				if (lastsegment[1] == null) {
 					lastsegment[1] = node;
 					this.arrive = node;
 					this.timeSeconds += time;
@@ -170,7 +172,7 @@ public class Trip {
 		}
 	
 	public String toString() {
-		String s = "The Cardholder of card " + this.card.getId() + "made a trip on " + this.date + "for " + ((double) this.timeSeconds)/60 + "minutes with route:\n";
+		String s = "The Cardholder of card " + this.card.getId() + " made a trip on " + this.date + " for " + ((double) this.timeSeconds)/60 + " minutes with route:\n";
 		for (int i=0; i <this.route_line.size(); i++) {
 			s += this.route_line.get(i) + ": " + this.route_nodes.get(i)[0] + ", " + this.route_nodes.get(i)[1];
 		}
