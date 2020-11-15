@@ -61,6 +61,13 @@ public class CardHolder {
 		this.cards.add(card);
 	}
 	
+	/**
+	 * remove the specific card at the inputed index in this cardholder's card list
+	 * @param index index of the card in this cardholder's card list
+	 */
+	public void removeCard(int index) {
+		this.cards.remove(index);
+	}
 	
 	/** 
 	 * Add the whole trip history of the given card into CardHolder's trip history.
