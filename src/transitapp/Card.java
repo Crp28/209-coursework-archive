@@ -74,6 +74,14 @@ public class Card {
 	}
 	
 	/**
+	 * Gets the status of this card.
+	 * @return true iff the card is not suspended, else false
+	 */
+	public boolean getStatus() {
+		return this.status;
+	}
+	
+	/**
 	 * Add balance to the card, then update its status according to the condition. 
 	 * Returns the balance after charging
 	 * 
