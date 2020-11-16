@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javafx.collections.FXCollections;
@@ -50,7 +51,6 @@ class SignUpCardHolder implements EventHandler<MouseEvent>{
 			warning.setText(null);
 			email.clear();
 			name.clear();
-			System.out.println(holders);//testing
 		}
 	}
 }
@@ -259,7 +259,7 @@ class RemoveCard implements EventHandler<ActionEvent>{
 			this.confirmation_message.setText("Card removed.");
 			this.confirmation_message.setTextFill(Color.GREEN);
 		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
-			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setText("Why don't you select a card??");
 			this.confirmation_message.setTextFill(Color.CRIMSON);
 		}
 		
@@ -319,7 +319,7 @@ class AddTen implements EventHandler<ActionEvent>{
 			this.confirmation_message.setText("Added $10 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
 			this.confirmation_message.setTextFill(Color.GREEN);
 		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
-			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setText("Why don't you select a card??");
 			this.confirmation_message.setTextFill(Color.CRIMSON);
 		}
 		
@@ -343,7 +343,7 @@ class AddTwenty implements EventHandler<ActionEvent>{
 			this.confirmation_message.setText("Added $20 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
 			this.confirmation_message.setTextFill(Color.GREEN);
 		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
-			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setText("Why don't you select a card??");
 			this.confirmation_message.setTextFill(Color.CRIMSON);
 		}
 		
@@ -367,9 +367,128 @@ class AddFifty implements EventHandler<ActionEvent>{
 			this.confirmation_message.setText("Added $50 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
 			this.confirmation_message.setTextFill(Color.GREEN);
 		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
-			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setText("Why don't you select a card??");
 			this.confirmation_message.setTextFill(Color.CRIMSON);
 		}
 		
 	}
+}
+
+class SuspendCard implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	
+	public SuspendCard(VBox output) {
+		this.output = output;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		Label suspend_des = new Label("Select a card to suspend:");
+		Label activate_des = new Label("Select a card to activate:");
+		Label confirmation_message = new Label();
+		ArrayList<Integer> normal_cards = new ArrayList<>();
+		ArrayList<Integer> suspended_cards = new ArrayList<>();
+		for (Card c: Main.activeholder.getCards()) {
+			if (c.getStatus()) {
+				normal_cards.add(c.getId());
+			} else if (!c.getStatus() && c.getBalance() > 0.0){
+				suspended_cards.add(c.getId());
+			}
+		}
+		ObservableList<Integer> normal_cards_ob = FXCollections.observableArrayList(normal_cards);
+		ObservableList<Integer> suspended_cards_ob = FXCollections.observableArrayList(suspended_cards);
+		ChoiceBox<Integer> normal_choices = new ChoiceBox<>(normal_cards_ob);
+		ChoiceBox<Integer> suspended_choices = new ChoiceBox<>(suspended_cards_ob);
+		Button suspend = new Button("Suspend");
+		Button activate = new Button("Activate");
+		
+		VBox sus_box = new VBox(20, suspend_des, normal_choices, suspend);
+		sus_box.setAlignment(Pos.CENTER);
+		VBox act_box = new VBox(20, activate_des, suspended_choices, activate);
+		act_box.setAlignment(Pos.CENTER);
+		HBox format = new HBox(60, sus_box, act_box);
+		format.setAlignment(Pos.CENTER);
+		
+		suspend.setOnAction(new Suspend(normal_choices, normal_cards_ob, suspended_cards_ob, confirmation_message));
+		activate.setOnAction(new Activate(suspended_choices, normal_cards_ob, suspended_cards_ob, confirmation_message));
+		
+		output.getChildren().clear();
+		output.getChildren().addAll(format, confirmation_message);
+	}
+	
+}
+
+class Suspend implements EventHandler<ActionEvent>{
+	
+	private ChoiceBox<Integer> normal_choices;
+	private ObservableList<Integer> normal_cards_ob;
+	private ObservableList<Integer> suspended_cards_ob;
+	private Label confirmation_message;
+	
+	public Suspend(ChoiceBox<Integer> normal_choices, ObservableList<Integer> normal_cards_ob, ObservableList<Integer> suspended_cards_ob, Label confirmation_message) {
+		this.normal_choices = normal_choices;
+		this.normal_cards_ob = normal_cards_ob;
+		this.suspended_cards_ob = suspended_cards_ob;
+		this.confirmation_message = confirmation_message;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		try {
+			for (Card c: Main.activeholder.getCards()) {
+				if (this.normal_choices.getSelectionModel().getSelectedItem().equals(c.getId())) {
+					this.normal_cards_ob.remove((Integer) c.getId());
+					this.suspended_cards_ob.add((Integer) c.getId());
+					Collections.sort(suspended_cards_ob);
+					Main.activeholder.suspendCard(c);
+					this.confirmation_message.setText("Card " + c.getId() + " suspended.");
+					break;
+				}
+			}
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(Exception e){
+			this.confirmation_message.setText("Why don't you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
+	}
+	
+}
+
+class Activate implements EventHandler<ActionEvent>{
+	
+	private ChoiceBox<Integer> suspended_choices;
+	private ObservableList<Integer> normal_cards_ob;
+	private ObservableList<Integer> suspended_cards_ob;
+	private Label confirmation_message;
+	
+	public Activate(ChoiceBox<Integer> suspended_choices, ObservableList<Integer> normal_cards_ob, ObservableList<Integer> suspended_cards_ob, Label confirmation_message) {
+		this.suspended_choices = suspended_choices;
+		this.normal_cards_ob = normal_cards_ob;
+		this.suspended_cards_ob = suspended_cards_ob;
+		this.confirmation_message = confirmation_message;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		try {
+			for (Card c: Main.activeholder.getCards()) {
+				if (this.suspended_choices.getSelectionModel().getSelectedItem().equals(c.getId())) {
+					this.suspended_cards_ob.remove((Integer) c.getId());
+					this.normal_cards_ob.add((Integer) c.getId());
+					Collections.sort(normal_cards_ob);
+					Main.activeholder.activateCard(c);
+					this.confirmation_message.setText("Card " + c.getId() + " reactivated.");
+					break;
+				}
+			}
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(Exception e){
+			this.confirmation_message.setText("Why don't you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
+	}
+	
 }

@@ -142,7 +142,6 @@ public class Main extends Application{
 		
 		
 	/*set transfer scene*/
-		Label page3 = new Label("P3");
 		Label p3_top_choicebus = new Label("Select a bus stop...");
 		Label p3_top_choicesubway = new Label("Select a subway station...");
 		
@@ -394,6 +393,7 @@ public class Main extends Application{
 		recenttrips.setOnAction(new ShowTrips(output_area));
 		manage_card.setOnAction(new ManageCards(output_area));
 		add_balance.setOnAction(new AddBalance(output_area));
+		suspend_card.setOnAction(new SuspendCard(output_area));
 		
 
 		
