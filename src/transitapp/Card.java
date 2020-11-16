@@ -135,9 +135,9 @@ public class Card {
 	 * @return the status of the card after updating it
 	 */
 	public boolean updateStatus() {
-		if (this.balance < 0.0 && this.status == NORMAL) {
+		if (this.balance <= 0.0 && this.status == NORMAL) {
 			this.status = SUSPENDED;      // suspend the card if insufficient funds
-		} else if (this.balance >= 0.0 && this.status == SUSPENDED) {
+		} else if (this.balance > 0.0 && this.status == SUSPENDED) {
 			this.status = NORMAL;         // active the card if there is balance
 		}
 		
