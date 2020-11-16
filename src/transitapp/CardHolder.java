@@ -140,7 +140,14 @@ public class CardHolder {
 		card.suspend();
 	}
 	
-	
+	/** 
+	 * Reactivate a Card for the user          
+	 * 
+	 * @param card the Card needs to be activated   
+	 */
+	public void activateCard(Card card) {
+		card.activate();
+	}
 	
 	/** 
 	 * Check the most recent three trips for the CardHolder. Return these trips
