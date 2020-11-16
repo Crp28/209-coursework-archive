@@ -66,6 +66,14 @@ public class Trip {
 		return this.timeSeconds;
 	}
 	
+	public ArrayList<Line> getLines(){
+		return this.route_line;
+	}
+	
+	public ArrayList<Node[]> getSegments(){
+		return this.route_nodes;
+	}
+	
 	/**
 	 * Returns if the trip is finished.
 	 * @return true iff the trip is finished, else false
@@ -136,7 +144,7 @@ public class Trip {
 				return "INSUFFICIENT BALANCE";
 			}
 			if (lastline.equals(line)) {
-				if (lastsegment[1] == null) {
+				if (lastsegment[1].equals(null)) {
 					lastsegment[1] = node;
 					this.arrive = node;
 					this.timeSeconds += time;
@@ -172,10 +180,7 @@ public class Trip {
 		}
 	
 	public String toString() {
-		String s = "The Cardholder of card " + this.card.getId() + " made a trip on " + this.date + " for " + ((double) this.timeSeconds)/60 + " minutes with route:\n";
-		for (int i=0; i <this.route_line.size(); i++) {
-			s += this.route_line.get(i) + ": " + this.route_nodes.get(i)[0] + ", " + this.route_nodes.get(i)[1];
-		}
+		String s = this.date + ": " + this.depart + "-->" + this.arrive + "\t" + this.totalCost();
 		return s;
 	}
 }
