@@ -44,7 +44,6 @@ class ConstructBusLine implements EventHandler<MouseEvent>{
 		this.text_bus.clear();
 		this.text_busline.clear();
 		
-		System.out.println(busline.get(this.num_bus_line));
 		this.num_bus_line += 1;
 		
 	}
@@ -87,7 +86,7 @@ class ConstructSubwayStation implements EventHandler<MouseEvent>{
 		
 		
 		
-		System.out.println(this.subwayline.get(0));
+
 		
 	}
 	
@@ -111,8 +110,7 @@ class SetIntersectBS implements EventHandler<MouseEvent>{
 	public void handle(MouseEvent event) {
 		try {
 			this.busline.get(Main.chosen_busline_index).hasTransferto(this.subwayline.get(0), Main.chosen_station, Main.chosen_stop);
-			System.out.println(this.busline.get(Main.chosen_busline_index).getNodes());
-			System.out.println(this.subwayline.get(0).getNodes());
+
 		}
 		catch(Exception e) { }
 	}
