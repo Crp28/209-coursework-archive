@@ -393,6 +393,7 @@ public class Main extends Application{
 		userinfo.setOnAction(new ShowUserInfo(output_area));
 		recenttrips.setOnAction(new ShowTrips(output_area));
 		manage_card.setOnAction(new ManageCards(output_area));
+		add_balance.setOnAction(new AddBalance(output_area));
 		
 
 		

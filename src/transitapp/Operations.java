@@ -5,12 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.TextAlignment;
@@ -102,8 +104,17 @@ class ShowDashboard implements EventHandler<ActionEvent>{
 		Label cards_str = new Label(cards);
 		cards_str.setWrapText(true);
 		cards_str.setTextAlignment(TextAlignment.CENTER);
+		Label avg_cost = new Label();
+		double tc = 0.0;
+		for (Trip trip: Main.activeholder.getTrips()) {
+			tc += trip.totalCost();
+		}
+		String ac = "Average cost per trip for this period: ";
+		ac += tc/Main.activeholder.getTrips().size();
+		avg_cost.setText(ac);
 		output.getChildren().add(cards_str);
 		output.getChildren().add(new Label("Accumulated " + Main.activeholder.getTrips().size() + " trips in this period."));
+		output.getChildren().add(avg_cost);
 		output.getChildren().add(balance_reminder);
 	}
 	
@@ -188,7 +199,6 @@ class ManageCards implements EventHandler<ActionEvent>{
 	public void handle(ActionEvent event) {
 		Label remove_description = new Label("or select a following card to remove: ");
 		Label confirmation_message = new Label();
-		confirmation_message.setTextFill(Color.GREEN);
 		Button add_card = new Button("Get a New Card");
 		Button remove_card = new Button("Confirm");
 		ArrayList<Integer> ids = new ArrayList<>();
@@ -224,6 +234,7 @@ class AddCard implements EventHandler<ActionEvent>{
 		Main.activeholder.addCard(new_c);
 		this.list_cards.add(new_c.getId());
 		confirmation_message.setText("Successfully added card: " + new_c.getId());
+		confirmation_message.setTextFill(Color.GREEN);
 	}
 	
 }
@@ -242,9 +253,123 @@ class RemoveCard implements EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-		Main.activeholder.removeCard(choices.getSelectionModel().getSelectedIndex());
-		this.list_cards.remove(choices.getSelectionModel().getSelectedIndex());
-		this.confirmation_message.setText("Card removed.");
+		try {
+			Main.activeholder.removeCard(choices.getSelectionModel().getSelectedIndex());
+			this.list_cards.remove(choices.getSelectionModel().getSelectedIndex());
+			this.confirmation_message.setText("Card removed.");
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
+			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
 	}
 	
+}
+
+
+class AddBalance implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	
+	public AddBalance(VBox output) {
+		this.output = output;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Label description = new Label("Select a card: ");
+		Label confirmation_message = new Label();
+		ArrayList<Integer> ids = new ArrayList<>();
+		for (Card c: Main.activeholder.getCards()) {
+			ids.add(c.getId());
+		}
+		ObservableList<Integer> list_cards = FXCollections.observableArrayList(ids);
+		ChoiceBox<Integer> choices = new ChoiceBox<>(list_cards);
+		Button add_10 = new Button("Add $10");
+		Button add_20 = new Button("Add $20");
+		Button add_50 = new Button("Add $50");
+		HBox buttons = new HBox(30, add_10, add_20, add_50);
+		buttons.setAlignment(Pos.CENTER);
+		
+		add_10.setOnAction(new AddTen(choices, confirmation_message));
+		add_20.setOnAction(new AddTwenty(choices, confirmation_message));
+		add_50.setOnAction(new AddFifty(choices, confirmation_message));
+		
+		output.getChildren().clear();
+		output.getChildren().addAll(description, choices, buttons, confirmation_message);
+		VBox.setMargin(buttons, new Insets(50,0,0,0));
+	}
+}
+
+class AddTen implements EventHandler<ActionEvent>{
+	
+	private ChoiceBox<Integer> choices;
+	private Label confirmation_message;
+	
+	public AddTen(ChoiceBox<Integer> choices, Label confirmation_message) {
+		this.choices = choices;
+		this.confirmation_message = confirmation_message;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		try {
+			double curr_balance = Main.activeholder.getCards().get(choices.getSelectionModel().getSelectedIndex()).addBalance(10.0);
+			this.confirmation_message.setText("Added $10 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
+			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
+	}
+}
+
+class AddTwenty implements EventHandler<ActionEvent>{
+	
+	private ChoiceBox<Integer> choices;
+	private Label confirmation_message;
+	
+	public AddTwenty(ChoiceBox<Integer> choices, Label confirmation_message) {
+		this.choices = choices;
+		this.confirmation_message = confirmation_message;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		try {
+			double curr_balance = Main.activeholder.getCards().get(choices.getSelectionModel().getSelectedIndex()).addBalance(20.0);
+			this.confirmation_message.setText("Added $20 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
+			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
+	}
+}
+
+class AddFifty implements EventHandler<ActionEvent>{
+	
+	private ChoiceBox<Integer> choices;
+	private Label confirmation_message;
+	
+	public AddFifty(ChoiceBox<Integer> choices, Label confirmation_message) {
+		this.choices = choices;
+		this.confirmation_message = confirmation_message;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		try {
+			double curr_balance = Main.activeholder.getCards().get(choices.getSelectionModel().getSelectedIndex()).addBalance(50.0);
+			this.confirmation_message.setText("Added $50 to card " + choices.getValue() + ". Current balance: $" + curr_balance + ".");
+			this.confirmation_message.setTextFill(Color.GREEN);
+		} catch(java.lang.ArrayIndexOutOfBoundsException e) {
+			this.confirmation_message.setText("Why DIDN'T you select a card??");
+			this.confirmation_message.setTextFill(Color.CRIMSON);
+		}
+		
+	}
 }
