@@ -166,7 +166,7 @@ public class Card {
 	 * @return s   The string representation of this card
 	 */
 	public String toString() {
-		String s = String s = this.id +
+		String s = this.id +
 				 " : $" + this.balance;
 				 
 		return s;
