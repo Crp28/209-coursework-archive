@@ -154,7 +154,7 @@ public class Trip {
 					return this;
 				}
 			}
-			else if (!lastsegment[1] == null) {
+			else if (!(lastsegment[1] == null)) {
 				if (node == lastsegment[1] || lastsegment[1].getTransfer().contains(node)) {
 					if (this.timeSeconds < 7200) {
 						if (line.type == "Bus") {
