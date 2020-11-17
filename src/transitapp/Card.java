@@ -166,10 +166,8 @@ public class Card {
 	 * @return s   The string representation of this card
 	 */
 	public String toString() {
-		String s = "The card " + this.id +
-				 " owned by " + this.owner +
-				 " has balance of " + this.balance +
-				 " dollars.";
+		String s = String s = this.id +
+				 " : $" + this.balance;
 				 
 		return s;
 	}
