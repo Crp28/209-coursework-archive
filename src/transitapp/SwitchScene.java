@@ -7,8 +7,10 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 /**
  * The class will help us switch to the scene that we want.
@@ -141,4 +143,52 @@ class SwitchAndDo2 implements EventHandler<ActionEvent>{
 		
 	}
 	
+}
+
+
+class Logout implements EventHandler<ActionEvent>{
+	
+	private Stage stage;
+	private Scene scene;
+	private VBox output;
+	
+	
+	public Logout(Stage stage, Scene scene, VBox output) {
+		this.stage = stage;
+		this.scene = scene;
+		this.output = output;
+	}
+	
+	@Override
+	public void handle(ActionEvent event) {
+		output.getChildren().clear();
+		this.stage.setScene(this.scene);
+		Main.activeholder = null;
+		
+	}
+
+		
+	}
+
+class SwitchAndDo3 implements EventHandler<ActionEvent>{
+		private Stage stage;
+		private Scene scene;
+		private Button shutdown;
+		private Button turnon;
+	
+	public SwitchAndDo3(Stage stage, Scene scene, Button shutdown, Button turnon) {
+		this.stage = stage;
+		this.scene = scene;
+		this.shutdown = shutdown;
+		this.turnon = turnon;
+		
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		this.stage.setScene(this.scene);
+		this.shutdown.setDisable(true);
+		this.turnon.setDisable(false);
+		
+	}
 }
