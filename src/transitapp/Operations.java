@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -170,22 +172,6 @@ class ChangeName implements EventHandler<ActionEvent>{
 	
 }
 
-class ShowTrips implements EventHandler<ActionEvent>{
-	
-	private VBox output;
-	
-	public ShowTrips(VBox output) {
-		this.output = output;
-	}
-
-	@Override
-	public void handle(ActionEvent event) {
-		output.getChildren().clear();
-		output.getChildren().add(new Label("789"));
-		
-	}
-	
-}
 
 class ManageCards implements EventHandler<ActionEvent>{
 	
@@ -291,6 +277,20 @@ class AddBalance implements EventHandler<ActionEvent>{
 		Button add_50 = new Button("Add $50");
 		HBox buttons = new HBox(30, add_10, add_20, add_50);
 		buttons.setAlignment(Pos.CENTER);
+		
+		choices.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+				for (Card c : Main.activeholder.getCards()) {
+					if (c.getId() == list_cards.get((int) newValue)) {
+						confirmation_message.setTextFill(Color.BLACK);
+						confirmation_message.setText("Card " + c.getId() + " has balance $" + c.getBalance() + ".");
+					}
+				}				
+			}
+			
+		});
 		
 		add_10.setOnAction(new AddTen(choices, confirmation_message));
 		add_20.setOnAction(new AddTwenty(choices, confirmation_message));
@@ -488,6 +488,217 @@ class Activate implements EventHandler<ActionEvent>{
 			this.confirmation_message.setText("Why don't you select a card??");
 			this.confirmation_message.setTextFill(Color.CRIMSON);
 		}
+		
+	}
+	
+}
+
+class CheckTrips implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	
+	public CheckTrips(VBox output) {
+		this.output = output;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Label recent_trips = new Label();
+		String s = "";
+
+			int count = 0;
+			for (int i=Main.activeholder.getTrips().size()-1; i>0 && count<3; i--) {
+				//if (Main.activeholder.getTrips().get(i).isFinished()) {
+					s += Main.activeholder.getTrips().get(i).toString() + "\n";
+					count++;
+				//}
+			}
+
+		recent_trips.setText(s);
+		
+		output.getChildren().clear();
+		output.getChildren().add(recent_trips);
+	}
+	
+}
+
+class TapCard implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	private ArrayList<BusLine> busline;
+	private ArrayList<SubwayLine> subwayline;
+	
+	public TapCard(VBox output, ArrayList<BusLine> busline, ArrayList<SubwayLine> subwayline) {
+		this.output = output;
+		this.busline = busline;
+		this.subwayline = subwayline;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Label warning = new Label();
+		ArrayList<Card> cards = new ArrayList<>();
+		for (Card c: Main.activeholder.getCards()) {
+			if (c.getStatus()) {
+				cards.add(c);
+			}
+		}
+		ObservableList<Card> cards_ob = FXCollections.observableArrayList(cards);
+		ChoiceBox<Card> card_choices = new ChoiceBox<>(cards_ob);
+		
+		Button select_card = new Button("Select");
+		
+		select_card.setOnAction(new TapCardPrep(this.output, this.busline, this.subwayline, cards_ob, card_choices, warning));
+		
+		this.output.getChildren().clear();
+		this.output.getChildren().addAll(card_choices, select_card, warning);
+		
+}
+
+class TapCardPrep implements EventHandler<ActionEvent>{
+	private VBox output;
+	private ArrayList<BusLine> busline;
+	private ArrayList<SubwayLine> subwayline;
+	private ObservableList<Card> cards_ob;
+	private ChoiceBox<Card> card_choices;
+	private Card card;
+	private Label warning;
+	
+	public TapCardPrep(VBox output, ArrayList<BusLine> busline, ArrayList<SubwayLine> subwayline, ObservableList<Card> cards_ob, ChoiceBox<Card> card_choices, Label warning) {
+		this.output = output;
+		this.busline = busline;
+		this.subwayline = subwayline;
+		this.cards_ob = cards_ob;
+		this.card_choices = card_choices;
+		this.warning = warning;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		try {
+			this.card = cards_ob.get(card_choices.getSelectionModel().getSelectedIndex());
+			Label message = new Label();
+
+			Label date_sign = new Label("Date: ");
+			Label time_elapsed_sign = new Label("Time elapsed since last tap: ");
+			TextField date_entered = new TextField();
+			date_entered.setPromptText("mm-dd-yyyy");
+			TextField seconds_entered = new TextField();
+			seconds_entered.setPromptText("seconds");
+			Button tap = new Button("Tap");
+			tap.setPrefSize(80, 40);
+			
+			ArrayList<Line> lines = new ArrayList<>();
+			for (BusLine bl: this.busline) {
+				lines.add(bl);
+			}
+			for (SubwayLine sl: this.subwayline) {
+				lines.add(sl);
+			}
+			ObservableList<Line> lines_ob = FXCollections.observableArrayList(lines);
+//			if (!this.card.getTrip().isEmpty()) {
+//				if (!this.card.getTrip().get(this.card.getTrip().size()-1).isFinished()) {
+//					if (this.card.getTrip().get(this.card.getTrip().size()-1).getSegments().get(this.card.getTrip().get(this.card.getTrip().size()-1).getSegments().size()-1)[1] == null) {
+//						lines_ob.clear();
+//						lines_ob.add(this.card.getTrip().get(this.card.getTrip().size()-1).getLines().get(this.card.getTrip().get(this.card.getTrip().size()-1).getLines().size()-1));
+//					}
+//				}
+//			}
+			// because Trip won't work so all this part and below is broken...
+			ObservableList<Node> selected_line = FXCollections.observableArrayList(new ArrayList<Node>());
+			ChoiceBox<Line> line_choices = new ChoiceBox<>(lines_ob);
+			ChoiceBox<Node> node_choices = new ChoiceBox<>(selected_line);
+			
+			HBox line_node_box = new HBox(40, line_choices, node_choices);
+			
+			line_choices.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+
+				@Override
+				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+					selected_line.clear();
+					for (Node n: lines_ob.get((int) newValue).getNodes()) {
+						selected_line.add(n);
+					}
+				}
+			});
+
+			tap.setOnAction(new TapCardUpdate(this.output, this.card, line_choices, node_choices, date_entered, seconds_entered, message));
+			
+			this.output.getChildren().clear();
+			this.output.getChildren().addAll(line_node_box, date_sign, date_entered, time_elapsed_sign, seconds_entered, tap, message);
+			
+		} catch(Exception e) {
+			this.warning.setText("Why don't you select a card??");
+			this.warning.setTextFill(Color.CRIMSON);
+		}
+		
+	}
+		
+	}
+	
+}
+
+class TapCardUpdate implements EventHandler<ActionEvent> {
+	
+	private VBox output;
+	private Card card;
+	private ChoiceBox<Line> line_choices;
+	private ChoiceBox<Node> node_choices;
+	private TextField date_entered;
+	private TextField seconds_entered;
+	private Label message;
+	
+	public TapCardUpdate(VBox output, Card card, ChoiceBox<Line> line_choices, ChoiceBox<Node> node_choices, TextField date_entered, TextField seconds_entered, Label message) {
+		this.output = output;
+		this.card = card;
+		this.line_choices = line_choices;
+		this.node_choices = node_choices;
+		this.date_entered = date_entered;
+		this.seconds_entered = seconds_entered;
+		this.message = message;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		if (this.line_choices.getSelectionModel().getSelectedIndex() == -1 || this.date_entered.getText() == null || this.seconds_entered.getText() == null) {
+			message.setText("All fields are REQUIRED!");
+			message.setTextFill(Color.CRIMSON);
+		}else {
+			Node node = this.node_choices.getSelectionModel().getSelectedItem();
+			Line line = this.line_choices.getSelectionModel().getSelectedItem();
+			String date = this.date_entered.getText();
+			int seconds = 0;
+			try {
+				seconds = Integer.parseInt(this.seconds_entered.getText());
+			}catch(Exception e) {
+				this.message.setText("Enter a valid integer for time elapsed.");
+				this.message.setTextFill(Color.CRIMSON);
+			}
+			
+			
+			
+			if (card.getTrip().isEmpty()) {
+				Trip t = new Trip(this.card, node, line, date);
+				this.card.addTrip(t);
+				Main.activeholder.addTrip(t);
+				this.output.getChildren().clear();
+				this.output.getChildren().add(new Label("Success."));
+			} else {
+				if (card.getTrip().get(card.getTrip().size()-1).update(node, line, seconds) == -1) {
+					Trip t = new Trip(this.card, node, line, date);
+					this.card.addTrip(t);
+					Main.activeholder.addTrip(t);
+					this.output.getChildren().clear();
+					this.output.getChildren().add(new Label("Success."));
+				} else {
+					this.output.getChildren().clear();
+					this.output.getChildren().add(new Label("Success."));
+				}
+			}
+		}
+		
+		
+		
 		
 	}
 	

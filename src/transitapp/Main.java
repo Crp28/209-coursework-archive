@@ -372,7 +372,7 @@ public class Main extends Application{
 		recenttrips.setBorder(Border.EMPTY);
 		recenttrips.setStyle("-fx-text-fill: #00a2ff;-fx-underline: false;");
 		recenttrips.setTextAlignment(TextAlignment.CENTER);
-		Hyperlink record_trip = new Hyperlink("Record a trip...");
+		Hyperlink record_trip = new Hyperlink("Tap Card");
 		record_trip.setWrapText(true);
 		record_trip.setBorder(Border.EMPTY);
 		record_trip.setStyle("-fx-text-fill: red;-fx-underline: true;");
@@ -390,10 +390,11 @@ public class Main extends Application{
 		
 		dashboard.setOnAction(new ShowDashboard(output_area));
 		userinfo.setOnAction(new ShowUserInfo(output_area));
-		recenttrips.setOnAction(new ShowTrips(output_area));
+		recenttrips.setOnAction(new CheckTrips(output_area));
 		manage_card.setOnAction(new ManageCards(output_area));
 		add_balance.setOnAction(new AddBalance(output_area));
 		suspend_card.setOnAction(new SuspendCard(output_area));
+		record_trip.setOnAction(new TapCard(output_area, this.busline, this.subwayline));
 		
 
 		
@@ -412,6 +413,18 @@ public class Main extends Application{
 		login.setOnAction(new SwitchAndDo2(stage, set_User_control_panel_scene, this.holders, email_entered, warning_email_not_exist));
 		
 		
+		BorderPane admin_panel = new BorderPane();
+		Label admin_message = new Label("Under Construction...");
+		admin_message.setFont((new Font("Cambria", 45)));
+		admin_message.setTextFill(Color.GRAY);
+		Label sorry = new Label("Since we have only 3 and also because of my inability we are unable to finish this :( -- Yuchen Bao");
+		sorry.setWrapText(true);
+		sorry.setTextAlignment(TextAlignment.CENTER);
+		admin_panel.setTop(sorry);
+		admin_panel.setCenter(admin_message);
+		Scene admin_scene = new Scene(admin_panel, 500,500);
+		
+		select_admin.setOnAction(new SwitchScene(stage, admin_scene));
 		
 		
 		
