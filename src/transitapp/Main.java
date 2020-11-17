@@ -413,15 +413,37 @@ public class Main extends Application{
 		login.setOnAction(new SwitchAndDo2(stage, set_User_control_panel_scene, this.holders, email_entered, warning_email_not_exist));
 		
 		
+		VBox admin_link= new VBox(120);
+		
 		BorderPane admin_panel = new BorderPane();
-		Label admin_message = new Label("Under Construction...");
-		admin_message.setFont((new Font("Cambria", 45)));
-		admin_message.setTextFill(Color.GRAY);
-		Label sorry = new Label("Since we have only 3 and also because of my inability we are unable to finish this :( -- Yuchen Bao");
+		Button logout_admin = new Button("Logout\n<---");
+		logout_admin.setTextAlignment(TextAlignment.CENTER);
+		logout_admin.setPrefSize(120, 70);
+		Hyperlink dashboard_admin = new Hyperlink("Dashboard");
+		dashboard_admin.setBorder(Border.EMPTY);
+		dashboard_admin.setStyle("-fx-text-fill: #00a2ff;-fx-underline: false;");
+		Hyperlink end_period = new Hyperlink("End current period");
+		end_period.setWrapText(true);
+		end_period.setTextAlignment(TextAlignment.CENTER);
+		end_period.setBorder(Border.EMPTY);
+		end_period.setStyle("-fx-text-fill: red;-fx-underline: true;");
+		admin_link.getChildren().addAll(dashboard_admin, end_period, logout_admin);
+		admin_link.setPrefWidth(100);
+		admin_link.setAlignment(Pos.CENTER);
+		admin_link.setStyle("-fx-border-color: black");
+		Label sorry = new Label("Since we have only 3 and also because of my inability we were unable to finish this :( -- Yuchen Bao");
 		sorry.setWrapText(true);
 		sorry.setTextAlignment(TextAlignment.CENTER);
 		admin_panel.setTop(sorry);
-		admin_panel.setCenter(admin_message);
+		VBox output_admin = new VBox(30);
+		output_admin.setAlignment(Pos.CENTER);
+		admin_panel.setLeft(admin_link);
+		admin_panel.setCenter(output_admin);
+		
+		dashboard_admin.setOnAction(new DashboardA(output_admin, this.holders));
+		end_period.setOnAction(new EndPeriod(output_admin, this.holders));
+		logout_admin.setOnAction(new Logout(stage, setSelection_scene, output_admin));
+		
 		Scene admin_scene = new Scene(admin_panel, 500,500);
 		
 		select_admin.setOnAction(new SwitchScene(stage, admin_scene));

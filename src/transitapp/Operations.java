@@ -703,3 +703,67 @@ class TapCardUpdate implements EventHandler<ActionEvent> {
 	}
 	
 }
+
+class EndPeriod implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	private HashMap<String, CardHolder> holders;
+	
+	public EndPeriod(VBox output, HashMap<String, CardHolder> holders) {
+		this.output = output;
+		this.holders = holders;
+	}
+
+	@Override
+	public void handle(ActionEvent arg0) {
+		for (CardHolder h: this.holders.values()) {
+			h.clearTrips();
+		}
+		Label terminate = new Label("Period terminated. All Trip records are reset.");
+		output.getChildren().clear();
+		output.getChildren().add(terminate);
+	}
+	
+}
+
+class DashboardA implements EventHandler<ActionEvent>{
+	
+	private VBox output;
+	private HashMap<String, CardHolder> holders;
+	
+	public DashboardA(VBox output, HashMap<String, CardHolder> holders) {
+		this.output = output;
+		this.holders = holders;
+	}
+
+	@Override
+	public void handle(ActionEvent event) {
+		Label users_count = new Label();
+		Label trips_count = new Label();
+		Label revenue = new Label();
+		
+		String user = "Total ";
+		user += this.holders.values().size() + " users in system.";
+		users_count.setText(user);
+		
+		String trips = "Total ";
+		int tnum = 0;
+		for (CardHolder h: this.holders.values()) {
+			tnum += h.getTrips().size();
+		}
+		trips += tnum + " trips in this period.";
+		trips_count.setText(trips);
+		
+		String rev = "Total ";
+		double money = 0.0;
+		for (CardHolder h: this.holders.values()) {
+			money += h.transit_cost();
+		}
+		rev += money +" revenue earned in this period.";
+		revenue.setText(rev);
+		
+		output.getChildren().clear();
+		output.getChildren().addAll(users_count, trips_count, revenue);
+		
+	}
+}
