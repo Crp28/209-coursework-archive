@@ -180,7 +180,7 @@ public class Trip {
 		}
 	
 	public String toString() {
-		String s = this.date + ": " + this.depart + "-->" + this.arrive + "\t" + this.totalCost();
+		String s = this.date + ": " + this.depart.getName() + "-->" + this.arrive.getName() + "\t" + this.totalCost();
 		return s;
 	}
 }
