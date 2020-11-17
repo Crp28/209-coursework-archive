@@ -144,7 +144,7 @@ public class Trip {
 				return "INSUFFICIENT BALANCE";
 			}
 			if (lastline.equals(line)) {
-				if (lastsegment[1].equals(null)) {
+				if (lastsegment[1] == null) {
 					lastsegment[1] = node;
 					this.arrive = node;
 					this.timeSeconds += time;
@@ -154,7 +154,7 @@ public class Trip {
 					return this;
 				}
 			}
-			else if (!lastsegment[1].equals(null)) {
+			else if (!lastsegment[1] == null) {
 				if (node == lastsegment[1] || lastsegment[1].getTransfer().contains(node)) {
 					if (this.timeSeconds < 7200) {
 						if (line.type == "Bus") {
