@@ -15,12 +15,14 @@ public class Trip {
 	
 	public Trip(Card card, Node node, Line line, String date) {
 		this.card = card;
-		this.card.addTrip(this);
-		this.card.getHolder().addTrip(this);
 		this.date = date;
 		this.depart = node;
+		this.arrive = null;
 		this.timeSeconds = 0;
 		this.route_line.add(line);
+		if (line.type == "Bus") {
+			this.card.pay(2.0);
+		}
 		Node[] n = new Node[2];
 		n[0] = node;
 		this.route_nodes.add(n);
@@ -137,24 +139,11 @@ public class Trip {
 	 * @time time elapsed in seconds since last update
 	 * @return Returns the updated Trip, or "INSUFFICIENT BALANCE" if the card related to this trip has insufficient balance, or -1 if requirements are not met (i.e. not transfer node or over time limit).
 	 */
-	public Object update(Node node, Line line, int time) {
+	public int update(Node node, Line line, int time) {
 		Node[] lastsegment = this.route_nodes.get(this.route_nodes.size()-1);
 		Line lastline = this.route_line.get(this.route_line.size()-1);
-			if (this.card.getBalance() <= 0) {
-				return "INSUFFICIENT BALANCE";
-			}
-			if (lastline.equals(line)) {
-				if (lastsegment[1] == null) {
-					lastsegment[1] = node;
-					this.arrive = node;
-					this.timeSeconds += time;
-					if (line.type == "Subway") {
-						this.card.pay(this.calcLastSegmentCost());
-					}
-					return this;
-				}
-			}
-			else if (!(lastsegment[1] == null)) {
+			
+			if (!(lastsegment[1] == null)) {
 				if (node == lastsegment[1] || lastsegment[1].getTransfer().contains(node)) {
 					if (this.timeSeconds < 7200) {
 						if (line.type == "Bus") {
@@ -169,7 +158,18 @@ public class Trip {
 						this.route_nodes.add(newSegment);
 						this.route_line.add(line);
 						this.timeSeconds += time;
-						return this;
+						return 0;
+					}
+				}
+			}
+			else if (lastline.equals(line)) {
+				if (lastsegment[1] == null) {
+					this.route_nodes.get(this.route_nodes.size()-1)[1] = node;  //why this would not work???
+					this.arrive = node;								//why???
+					this.timeSeconds += time;
+					if (line.type == "Subway") {
+						this.card.pay(this.calcLastSegmentCost());
+						return 0;
 					}
 				}
 			}
@@ -180,7 +180,10 @@ public class Trip {
 		}
 	
 	public String toString() {
-		String s = this.date + ": " + this.depart.getName() + "-->" + this.arrive.getName() + "\t" + this.totalCost();
+		String s = "";
+		for (int i=0; i <this.route_line.size(); i++) {
+			s += this.route_line.get(i) + ": " + this.route_nodes.get(i)[0] + ", " + this.route_nodes.get(i)[1];
+		}
 		return s;
 	}
 }
