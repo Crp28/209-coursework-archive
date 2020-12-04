@@ -1,0 +1,30 @@
+Marked By: Ziyyad
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+If you feel there was an error in the marking of an assignment, you may request a remark using this 
+form: https://forms.gle/93YZRXawf8NfqEAm6 You must give a specific reason for the request, referring 
+to a possible error or omission by the marker. Please keep in mind that your grade may stay the same, 
+may increase, or may even decrease, after your remark request is assessed. Remark requests MUST be 
+received within one week of when the grade was released.
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+Marking Breakdown: 
+    - Functionality (based on all your working features): (2.125/3.5 points)  
+	    -  Subway tapping doesn't seem to work? -0.25
+        - Trip capping doesn't seem to work either -0.25 and so the transfer would'nt work either -0.25
+        - Admin wasn't completed but I was able to see the revenue so I'm deducting only 0.125
+        - Bus and subway was never specified as bi-directional so -0.5
+    - Code Architecture (use of object-oriented programming principles and design patterns, and a 
+	clear discussion of these design decisions in FEATURES.txt): (2/3 points)
+        - No use of design patterns -1
+    - Code Style (no repetitive code, overall code is clean and easy to read): (2/2 points)
+        - Looks good
+    - Documentation (complete, well-written Javadocs): (0.25/0.5 points)
+        - Not consistent -0.25
+    - Use of Scrum (based on your product backlog): (0.5/0.5 points)
+        - Looks good!
+    - Use of git (following the workflow detailed in this handout, using properly named branches for 
+	each task, having useful commit messages, having multiple commits throughout the assignment 
+	work period rather than all at the end): (0.26/0.5 points)
+		- git branches could have been better. Usually each branch represents a user story/task
+	- BONUS: (0.5/0.5)
+
+TOTAL: 7.375/10
